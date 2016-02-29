@@ -1,22 +1,24 @@
 #ifndef BALL_H
 #define BALL_H
 #include <SFML/Graphics.hpp>
+#include <math.h>
+#include <iostream>
 
-using namespace sf;
 
-class Ball: public Drawable, Transformable
+class Ball: public sf::Drawable, sf::Transformable
 {
 public:
 
     Ball();
     enum Direction {L,R,T,B,LT,LB,RT,RB};    //LEFT, RIGHT, TOP, BOTTOM, LTOP, LBOTTOM, RTOP, RBOTTOM
     Direction direction;
-
-    void update(Direction direct);
-    void movement(Direction direct);
+    sf::Vector2f lerp(sf::Vector2f from, sf::Vector2f to, float t);
+    void update(sf::Vector2f mousePosition, float delta);
+    void isClicked(bool check);
 
 private:
-    CircleShape ball_PRIVATE;
+    bool clicked;
+    sf::CircleShape ball_PRIVATE;
     float x_PRIVATE, y_PRIVATE, speed_PRIVATE;
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
