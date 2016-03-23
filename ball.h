@@ -14,7 +14,6 @@ public:
     Direction direction;
     sf::Vector2f lerp(sf::Vector2f from, sf::Vector2f to, float t);
     void update(sf::Vector2f mousePosition, float delta);
-    void isClicked(bool check);
 
 private:
     bool clicked;
