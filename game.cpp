@@ -21,7 +21,7 @@ void Game::runGame()
         case MENU:
             menu();
             break;
-        case LEVEL:
+        case STOP:
             level();
             break;
         case LOADING:
@@ -32,9 +32,46 @@ void Game::runGame()
     }
 }
 
-bool Game::isCollisionExist()
+bool Game::isCollisionNotExist()
 {
-    return true;
+    bool result = true;
+    for(unsigned int i=0;i<Maze_PRIVATE.MazeContainer.size();i++)
+    {
+        Vector2f topLeft, topRight, botLeft, botRight, playerCoords;
+        float distance[4];
+        playerCoords.x = player.getPos().x;
+        playerCoords.y = player.getPos().y;
+
+        topLeft.x = Maze_PRIVATE.MazeContainer.at(i).getPosition().x;
+        topLeft.y = Maze_PRIVATE.MazeContainer.at(i).getPosition().y;
+
+        topRight.x = Maze_PRIVATE.MazeContainer.at(i).getPosition().x + Maze_PRIVATE.MazeContainer.at(i).getSize().x;
+        topRight.y = Maze_PRIVATE.MazeContainer.at(i).getPosition().y;
+
+        botLeft.x = Maze_PRIVATE.MazeContainer.at(i).getPosition().x;
+        botLeft.y = Maze_PRIVATE.MazeContainer.at(i).getPosition().y + Maze_PRIVATE.MazeContainer.at(i).getSize().y;
+
+        botRight.x = Maze_PRIVATE.MazeContainer.at(i).getPosition().x + Maze_PRIVATE.MazeContainer.at(i).getSize().x;
+        botRight.y = Maze_PRIVATE.MazeContainer.at(i).getPosition().y + Maze_PRIVATE.MazeContainer.at(i).getSize().y;
+
+        distance[0] = sqrtf(pow(playerCoords.x - topLeft.x,2) + pow(playerCoords.y - topLeft.y,2));
+        distance[1] = sqrtf(pow(playerCoords.x - topRight.y,2) + pow(playerCoords.y - topRight.y,2));
+        distance[2] = sqrtf(pow(playerCoords.x - botLeft.x,2) + pow(playerCoords.y - botLeft.y,2));
+        distance[3] = sqrtf(pow(playerCoords.x - botRight.x,2) + pow(playerCoords.y - botRight.y,2));
+
+
+
+        for(int j=0;j<4;j++) ///TODO: conditions to collide with walls between topLeft, topRight, botLeft, botRight
+        {
+            if(distance[j] <= player.getRadius() /*|| (playerCoords.x >= topLeft.x && playerCoords.x <= topRight.x && playerCoords.y <=topLeft.x && playerCoords.y >= botLeft.y)*/)
+            {
+                std::cout<<"crashed z: kwadrat-"<<i<<" róg-"<<j<<std::endl;
+                result = false;
+            }
+        }
+
+    }
+    return result;
 }
 bool Game::isAbleToDraw()
 {
@@ -42,13 +79,14 @@ bool Game::isAbleToDraw()
     while(state == LOADING)
     {
         srand(time(NULL));
+        loading();
         Maze_PRIVATE.createMaze();
         blocks.addBlock(800,10,0,590);
         blocks.addBlock(800,10,0,0);
 
         blocks.addBlock(10,600,0,0);
         blocks.addBlock(10,600,790,0);
-        state = LEVEL;
+        state = STOP;
     }
     return true;
 }
@@ -56,7 +94,7 @@ bool Game::isAbleToDraw()
 void Game::update()
 {
     play_PRIVATE();
-    player.update(Vector2f(mouseY_PRIVATE, mouseX_PRIVATE),delta);
+    player.update(Vector2f(mouseX_PRIVATE, mouseY_PRIVATE),delta, isCollisionNotExist());
     delta = clock.getElapsedTime().asSeconds();
     clock.restart();
 }
@@ -85,18 +123,18 @@ void Game::menu()
 
     title.setPosition(800/2-title.getGlobalBounds().width/2,20);
 
-    const int ile = 2;
+    const int textsCount = 2;
 
-    Text tekst[ile];
+    Text text[textsCount];
 
     std::string str[] = {"Play","Exit"};
-    for(int i=0;i<ile;i++)
+    for(int i=0;i<textsCount;i++)
     {
-        tekst[i].setFont(font);
-        tekst[i].setCharacterSize(65);
+        text[i].setFont(font);
+        text[i].setCharacterSize(65);
 
-        tekst[i].setString(str[i]);
-        tekst[i].setPosition(800/2-tekst[i].getGlobalBounds().width/2,150+i*120);
+        text[i].setString(str[i]);
+        text[i].setPosition(800/2-text[i].getGlobalBounds().width/2,150+i*120);
     }
 
     while(state == MENU)
@@ -114,28 +152,28 @@ void Game::menu()
                 state = END;
             }
             //klikniêcie MENU
-            if(tekst[0].getGlobalBounds().contains(mouse) &&
+            if(text[0].getGlobalBounds().contains(mouse) &&
                 event.type == Event::MouseButtonReleased && (event.key.code == Mouse::Left || event.key.code == Mouse::Right))
             {
                 isAbleToDraw();
             }
             //klikniêcie EXIT
-            else if(tekst[1].getGlobalBounds().contains(mouse) &&
+            else if(text[1].getGlobalBounds().contains(mouse) &&
                 event.type == Event::MouseButtonReleased && event.key.code == Mouse::Left)
             {
                 state = END;
             }
         }
-        for(int i=0;i<ile;i++)
-            if(tekst[i].getGlobalBounds().contains(mouse))
-                tekst[i].setColor(Color::Cyan);
-            else tekst[i].setColor(Color::White);
+        for(int i=0;i<textsCount;i++)
+            if(text[i].getGlobalBounds().contains(mouse))
+                text[i].setColor(Color::Cyan);
+            else text[i].setColor(Color::White);
 
         window_PRIVATE->clear();
 
         window_PRIVATE->draw(title);
-        for(int i=0;i<ile;i++)
-            window_PRIVATE->draw(tekst[i]);
+        for(int i=0;i<textsCount;i++)
+            window_PRIVATE->draw(text[i]);
 
         window_PRIVATE->display();
     }
@@ -143,10 +181,18 @@ void Game::menu()
 
 void Game::level()                                                                                  //TODO: generowanie losowego labiryntu
 {
+    Event event;
     while(state == LOADING)
         loading();
+    while(state == STOP && window_PRIVATE->pollEvent(event))
+    {
+        loading();
+        if(Mouse::isButtonPressed(Mouse::Left))
+        {
+            state = LEVEL;
+        }
 
-        Event event;
+    }
         while(state == LEVEL)
         {
             while(window_PRIVATE->pollEvent(event))
@@ -160,7 +206,7 @@ void Game::level()                                                              
                     state = END;
             }
             update();
-    }
+        }
 }
 
 void Game::loading()

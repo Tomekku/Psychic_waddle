@@ -7,6 +7,7 @@
 #include "ball.h"
 #include "block.h"
 #include "mazegenerator.h"
+#include <math.h>
 
 
 using namespace sf;
@@ -17,7 +18,7 @@ public:
     Game(RenderWindow &win);
     void update();
     void runGame();
-    bool isCollisionExist();
+    bool isCollisionNotExist();
     bool isAbleToDraw();
     void onClick();
     void menu();
@@ -25,7 +26,7 @@ public:
     void loading();
 
 protected:
-    enum Gamestate {MENU, END, LEVEL, LOADING};
+    enum Gamestate {MENU, END, LEVEL, LOADING, STOP};
     Gamestate state;
     Font font;
 private:
