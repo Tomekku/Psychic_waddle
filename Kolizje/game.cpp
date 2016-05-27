@@ -62,7 +62,7 @@ bool Game::isCollisionNotExist()
 
         for(int j=0;j<4;j++) ///TODO: conditions to collide with walls between topLeft, topRight, botLeft, botRight
         {
-            if(distance[j] <= player.getRadius() /*|| (playerCoords.x >= topLeft.x && playerCoords.x <= topRight.x && playerCoords.y <=topLeft.x && playerCoords.y >= botLeft.y)*/)
+            if(distance[j] <= player.getRadius() || (playerCoords.x >= topLeft.x && playerCoords.x <= topRight.x && playerCoords.y <=topLeft.x && playerCoords.y >= botLeft.y))
             {
                 std::cout<<"crashed z: kwadrat-"<<i<<" róg-"<<j<<std::endl;
                 result = false;
