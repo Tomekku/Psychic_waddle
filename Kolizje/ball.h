@@ -14,6 +14,7 @@ public:
     float getRadius(){return radius_PRIVATE;}
     sf::Vector2f getPos(){return ball_PRIVATE.getPosition();}
     Direction getDir(){return direction;}
+    float getThickness(){return ball_PRIVATE.getOutlineThickness();}
 
 private:
     Direction direction;
