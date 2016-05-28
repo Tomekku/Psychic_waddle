@@ -83,6 +83,12 @@ void MazeGenerator::createMaze()
     MazeContainer = block.blockContainer;
 }
 
+void MazeGenerator::clearContainers()
+{
+    MazeContainer.clear();
+    block.blockContainer.clear();
+}
+
 void MazeGenerator::draw(RenderTarget &target, RenderStates states) const
 {
     //states.transform *= getTransform();

@@ -91,7 +91,7 @@ void Game::createValidMaze()
 
 bool Game::isAbleToDraw()
 {
-
+    Maze_PRIVATE.clearContainers();
     state = LOADING;
     while(state == LOADING)
     {
@@ -185,10 +185,7 @@ void Game::menu()
             //klikniêcie Next Maze
             if(text[1].getGlobalBounds().contains(mouse) &&
                 event.type == Event::MouseButtonReleased && (event.key.code == Mouse::Left || event.key.code == Mouse::Right))
-            {
-                Maze_PRIVATE.MazeContainer.clear();
                 isAbleToDraw();
-            }
             //klikniêcie EXIT
             else if(text[2].getGlobalBounds().contains(mouse) &&
                 event.type == Event::MouseButtonReleased && event.key.code == Mouse::Left)

@@ -25,6 +25,7 @@ public:
       Pos(int ii, int jj) : x(ii), y(jj) { }    //creadora which set i = ii and j = jj (ii and jj are the parameters)
     };
       std::vector <RectangleShape> MazeContainer;
+      void clearContainers();
 private:
     int N, M, blocksize;
     //          N   S   E   W  NONE
