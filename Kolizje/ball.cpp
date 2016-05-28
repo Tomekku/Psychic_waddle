@@ -13,7 +13,7 @@ Ball::Ball()
     ball_PRIVATE.setOrigin(5,5);
     ball_PRIVATE.setPosition(x_PRIVATE,y_PRIVATE);
     speed_PRIVATE = 30;
-    direction = R;
+    direction = S;
 
 }
 
@@ -44,6 +44,10 @@ sf::Vector2f Ball::setVectorByDirection(Ball::Direction direction)
     case B:
         result.x = ball_PRIVATE.getPosition().x;
         result.y = ball_PRIVATE.getPosition().y + speed_PRIVATE;
+        break;
+    default:
+        result.x = ball_PRIVATE.getPosition().x;
+        result.y = ball_PRIVATE.getPosition().y;
         break;
     }
     return result;

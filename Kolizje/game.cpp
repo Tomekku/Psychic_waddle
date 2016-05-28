@@ -75,6 +75,7 @@ bool Game::isCollisionNotExist()
 
 void Game::createValidMaze()
 {
+
     Maze_PRIVATE.createMaze();
     for(unsigned int i=0;i<Maze_PRIVATE.MazeContainer.size();i++)
     {
@@ -90,6 +91,7 @@ void Game::createValidMaze()
 
 bool Game::isAbleToDraw()
 {
+
     state = LOADING;
     while(state == LOADING)
     {
@@ -128,14 +130,26 @@ void Game::menu()
 {
     Text title("Physic Waddle",font,80);
     title.setStyle(Text::Bold);
-
+    direction_PRIVATE = Ball::S;
     title.setPosition(800/2-title.getGlobalBounds().width/2,20);
 
-    const int textsCount = 2;
+    const int textsCount = 3;
 
     Text text[textsCount];
+    std::string str[textsCount];
+    if(Maze_PRIVATE.MazeContainer.size() != 0)
+    {
 
-    std::string str[] = {"Play","Exit"};
+        str[0] = "Play";
+        str[1] = "Next maze";
+        str[2] = "Exit";
+    }
+    else
+    {
+        str[0] = "Play";
+        str[1] = "---------";
+        str[2] = "Exit";
+    }
     for(int i=0;i<textsCount;i++)
     {
         text[i].setFont(font);
@@ -159,14 +173,24 @@ void Game::menu()
             {
                 state = END;
             }
-            //klikniêcie MENU
+            //kliknięcie Menu
             if(text[0].getGlobalBounds().contains(mouse) &&
+                    event.type == Event::MouseButtonReleased && event.key.code == Mouse::Left)
+            {
+                if(Maze_PRIVATE.MazeContainer.size() == 0)
+                    isAbleToDraw();
+                else
+                    state = LEVEL;
+            }
+            //klikniêcie Next Maze
+            if(text[1].getGlobalBounds().contains(mouse) &&
                 event.type == Event::MouseButtonReleased && (event.key.code == Mouse::Left || event.key.code == Mouse::Right))
             {
+                Maze_PRIVATE.MazeContainer.clear();
                 isAbleToDraw();
             }
             //klikniêcie EXIT
-            else if(text[1].getGlobalBounds().contains(mouse) &&
+            else if(text[2].getGlobalBounds().contains(mouse) &&
                 event.type == Event::MouseButtonReleased && event.key.code == Mouse::Left)
             {
                 state = END;
