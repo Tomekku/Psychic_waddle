@@ -34,13 +34,12 @@ void Game::runGame()
 bool Game::isCollisionNotExist()
 {
     bool result = true;
+    Vector2f topLeft, topRight, botLeft, botRight, playerCoords;
+    float distance[4];
+    playerCoords.x = player.getPos().x;
+    playerCoords.y = player.getPos().y;
     for(unsigned int i=0;i<Maze_PRIVATE.MazeContainer.size();i++)
     {
-        Vector2f topLeft, topRight, botLeft, botRight, playerCoords;
-        float distance[4];
-        playerCoords.x = player.getPos().x;
-        playerCoords.y = player.getPos().y;
-
         topLeft.x = Maze_PRIVATE.MazeContainer.at(i).getPosition().x;
         topLeft.y = Maze_PRIVATE.MazeContainer.at(i).getPosition().y;
 
@@ -58,11 +57,11 @@ bool Game::isCollisionNotExist()
         distance[2] = sqrtf(pow(playerCoords.x - botLeft.x,2) + pow(playerCoords.y - botLeft.y,2));
         distance[3] = sqrtf(pow(playerCoords.x - botRight.x,2) + pow(playerCoords.y - botRight.y,2));
 
+        ///TODO: odległość punktu okręgu playera od prostej określającej bok kwadratu ------> masz wiedzieć o co chodzi, bo to wczoraj wymyśliłeś!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-        for(int j=0;j<4;j++) ///TODO: conditions to collide with walls between topLeft, topRight, botLeft, botRight
+        for(int j=0;j<4;j++) //topLeft, topRight, botLeft, botRight
         {
-            if(distance[j] <= player.getRadius()+2*player.getThickness() || (playerCoords.x >= topLeft.x && playerCoords.x <= topRight.x && playerCoords.y <=topLeft.x && playerCoords.y >= botLeft.y))
+            if(/*distance[j] <= player.getRadius()+2*player.getThickness() ||*/ (playerCoords.x >= botLeft.x && playerCoords.x <= botRight.x && playerCoords.y <=topLeft.y && playerCoords.y >= botLeft.y))
             {
                 std::cout<<"crashed z: kwadrat-"<<i<<" róg-"<<j<<std::endl;
                 result = false;
@@ -83,6 +82,7 @@ void Game::createValidMaze()
             (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 20 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 552) ||
              (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 58 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 552) ||
              (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 20 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 514) ||
+             (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 58 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 514) ||
              (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 704 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 20) ||
              (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 742 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 58))
         {
@@ -117,7 +117,11 @@ bool Game::isAbleToDraw()
 void Game::update()
 {
     play_PRIVATE();
-    player.update(direction_PRIVATE,delta, isCollisionNotExist());
+    if(!player.update(direction_PRIVATE,delta, isCollisionNotExist()))
+    {
+        Maze_PRIVATE.clearContainers();
+        state = MENU;
+    }
     delta = clock.getElapsedTime().asSeconds();
     clock.restart();
 }

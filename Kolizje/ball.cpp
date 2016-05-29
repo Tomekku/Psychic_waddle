@@ -53,7 +53,7 @@ sf::Vector2f Ball::setVectorByDirection(Ball::Direction direction)
     return result;
 }
 
-void Ball::update(Direction direction,float delta, bool collision)
+bool Ball::update(Direction direction,float delta, bool collision)
 {
     sf::Vector2f nextPos = setVectorByDirection(direction);
     sf::Vector2f offset = lerp(ball_PRIVATE.getPosition() ,nextPos,delta*speed_PRIVATE);
@@ -65,12 +65,22 @@ void Ball::update(Direction direction,float delta, bool collision)
            ball_PRIVATE.getPosition().y <= 575 && ball_PRIVATE.getPosition().y >= 525) ||
            (ball_PRIVATE.getPosition().x >=750 && ball_PRIVATE.getPosition().x <= 800 &&
             ball_PRIVATE.getPosition().y >= 0 && ball_PRIVATE.getPosition().y <= 24))
+        {
             ball_PRIVATE.move(offset);
+            return true;
+        }
         else
+        {
             std::cout<<"crashed!!!!"<<std::endl;
+            ball_PRIVATE.setPosition(x_PRIVATE,y_PRIVATE);
+            return false;
+        }
     }
     else
+    {
         ball_PRIVATE.move(offset);
+        return true;
+    }
     //std::cout<<delta<<std::endl;
 
 }

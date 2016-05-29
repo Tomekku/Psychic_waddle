@@ -10,7 +10,7 @@ class Ball: public sf::Drawable, sf::Transformable
 public:
     Ball();
     enum Direction {L,R,T,B, S};    //LEFT, RIGHT, TOP, BOTTOM, STOP
-    void update(Direction direction, float delta, bool collision);
+    bool update(Direction direction, float delta, bool collision);
     float getRadius(){return radius_PRIVATE;}
     sf::Vector2f getPos(){return ball_PRIVATE.getPosition();}
     Direction getDir(){return direction;}
