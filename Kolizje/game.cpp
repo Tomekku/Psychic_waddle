@@ -62,7 +62,7 @@ bool Game::isCollisionNotExist()
 
         for(int j=0;j<4;j++) ///TODO: conditions to collide with walls between topLeft, topRight, botLeft, botRight
         {
-            if(distance[j] <= player.getRadius()+2*player.getThickness()+2 || (playerCoords.x >= topLeft.x && playerCoords.x <= topRight.x && playerCoords.y <=topLeft.x && playerCoords.y >= botLeft.y))
+            if(distance[j] <= player.getRadius()+2*player.getThickness() || (playerCoords.x >= topLeft.x && playerCoords.x <= topRight.x && playerCoords.y <=topLeft.x && playerCoords.y >= botLeft.y))
             {
                 std::cout<<"crashed z: kwadrat-"<<i<<" róg-"<<j<<std::endl;
                 result = false;
@@ -80,13 +80,19 @@ void Game::createValidMaze()
     for(unsigned int i=0;i<Maze_PRIVATE.MazeContainer.size();i++)
     {
         if((Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 742 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 20) ||
-            (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 20 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 552))
+            (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 20 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 552) ||
+             (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 58 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 552) ||
+             (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 20 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 514) ||
+             (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 704 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 20) ||
+             (Maze_PRIVATE.MazeContainer.at(i).getPosition().x == 742 && Maze_PRIVATE.MazeContainer.at(i).getPosition().y == 58))
         {
             Maze_PRIVATE.MazeContainer.erase(Maze_PRIVATE.MazeContainer.begin()+i);
+            i--;
            // std::cout<<"usunieto!!!!!!"<<std::endl;
         }
-        //std::cout<<"X: "<<Maze_PRIVATE.MazeContainer.at(i).getPosition().x<<" Y: "<<Maze_PRIVATE.MazeContainer.at(i).getPosition().y<<std::endl;
+        std::cout<<"X: "<<Maze_PRIVATE.MazeContainer.at(i).getPosition().x<<" Y: "<<Maze_PRIVATE.MazeContainer.at(i).getPosition().y<<std::endl;
     }
+
 }
 
 bool Game::isAbleToDraw()
