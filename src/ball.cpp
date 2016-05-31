@@ -62,7 +62,7 @@ bool Ball::update(Direction direction,float delta, bool collision)
             !(ball_PRIVATE.getPosition().y <= 575 && ball_PRIVATE.getPosition().y >= 24 && collision))
     {
         if((ball_PRIVATE.getPosition().x >= 0 && ball_PRIVATE.getPosition().x <=24 &&
-           ball_PRIVATE.getPosition().y <= 575 && ball_PRIVATE.getPosition().y >= 525) ||
+           ball_PRIVATE.getPosition().y <= 575 && ball_PRIVATE.getPosition().y >= 565) ||
            (ball_PRIVATE.getPosition().x >=750 && ball_PRIVATE.getPosition().x <= 800 &&
             ball_PRIVATE.getPosition().y >= 0 && ball_PRIVATE.getPosition().y <= 24))
         {

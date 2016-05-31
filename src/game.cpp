@@ -57,17 +57,48 @@ bool Game::isCollisionNotExist()
         distance[2] = sqrtf(pow(playerCoords.x - botLeft.x,2) + pow(playerCoords.y - botLeft.y,2));
         distance[3] = sqrtf(pow(playerCoords.x - botRight.x,2) + pow(playerCoords.y - botRight.y,2));
 
-        ///TODO: odległość punktu okręgu playera od prostej określającej bok kwadratu ------> masz wiedzieć o co chodzi, bo to wczoraj wymyśliłeś!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        for(int j=0;j<4;j++) //topLeft, topRight, botLeft, botRight
+
+        ///TODO: odległość punktu okręgu playera od prostej określającej bok kwadratu ------> masz wiedzieć o co chodzi, bo to wczoraj wymyśliłeś!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        int rozX,rozY;
+        rozX = topRight.x - topLeft.x;
+        rozY = botLeft.y - topLeft.y;
+        for(int p=0;p<=rozX;p++)
         {
-            if(/*distance[j] <= player.getRadius()+2*player.getThickness() ||*/ (playerCoords.x >= botLeft.x && playerCoords.x <= botRight.x && playerCoords.y <=topLeft.y && playerCoords.y >= botLeft.y))
+            float d = sqrtf(pow(playerCoords.x - (topLeft.x + p),2) + pow(playerCoords.y - topLeft.y,2));
+            if(d <= player.getRadius()+2*player.getThickness())
             {
-                std::cout<<"crashed z: kwadrat-"<<i<<" róg-"<<j<<std::endl;
+                std::cout<<"crashed z góra - kwadrat: "<<i<<" punkt: "<<p<<std::endl;
                 result = false;
             }
         }
-
+        for(int p=0;p<=rozX;p++)
+        {
+            float d = sqrtf(pow(playerCoords.x - (botLeft.x + p),2) + pow(playerCoords.y - botLeft.y,2));
+            if(d <= player.getRadius()+2*player.getThickness())
+            {
+                std::cout<<"crashed z dół - kwadrat: "<<i<<" punkt: "<<p<<std::endl;
+                result = false;
+            }
+        }
+        for(int p=0;p<=rozY;p++)
+        {
+            float d = sqrtf(pow(playerCoords.x - topLeft.x,2) + pow(playerCoords.y - (topLeft.y + p),2));
+            if(d <= player.getRadius()+2*player.getThickness())
+            {
+                std::cout<<"crashed z lewo - kwadrat: "<<i<<" punkt: "<<p<<std::endl;
+                result = false;
+            }
+        }
+        for(int p=0;p<=rozY;p++)
+        {
+            float d = sqrtf(pow(playerCoords.x - topRight.x,2) + pow(playerCoords.y - (topLeft.y + p),2));
+            if(d <= player.getRadius()+2*player.getThickness())
+            {
+                std::cout<<"crashed z prawo - kwadrat: "<<i<<" punkt: "<<p<<std::endl;
+                result = false;
+            }
+        }
     }
     return result;
 }
@@ -248,6 +279,7 @@ void Game::level()                                                              
                     state = END;
             }
             update();
+            std::cout<<"X: "<<player.getPos().x<<" Y: "<<player.getPos().y<<std::endl;
         }
 }
 
