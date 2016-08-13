@@ -14,18 +14,13 @@ public:
     MazeGenerator();
 
     void createMaze();
+    void clearContainers();
 
-    enum directions {
-        dir_up, dir_down, dir_right, dir_left, dir_none
+    enum Direction {
+        UP, DOWN, RIGHT, LEFT, NONE
     };
-    struct Pos {
-      int x;
-      int y;
-      Pos() {} //creadora per defecte
-      Pos(int ii, int jj) : x(ii), y(jj) { }    //creadora which set i = ii and j = jj (ii and jj are the parameters)
-    };
+
       std::vector <RectangleShape> MazeContainer;
-      void clearContainers();
 private:
     int N, M, blocksize;
     //          N   S   E   W  NONE
@@ -35,7 +30,7 @@ private:
     Block block;
 
     void drawRectMap(std::vector< std::vector < int> >& map, Block &block);
-    bool valid(std::vector< std::vector < int> > & map, int posx, int posy, int dir);
+    bool isValid(std::vector< std::vector < int> > & map, int posx, int posy, int dir);
     void generateMaze(std::vector< std::vector < int> > & map, int iniX, int iniY);
     virtual void draw(RenderTarget &target, RenderStates states) const;
 

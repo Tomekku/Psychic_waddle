@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string>
-#include "ball.h"
+#include "player.h"
 #include "block.h"
 #include "mazegenerator.h"
 #include <cmath>
@@ -16,27 +16,30 @@ class Game
 {
 public:
     Game(RenderWindow &win);
-    void update();
     void runGame();
-    bool isCollisionNotExist();
-    bool isAbleToDraw();
-    void menu();
-    void level();
-    void loading();
-    void createValidMaze();
 
 private:
+    bool _isCollisionNotExist();
+    bool _isAbleToDraw();
+    void _update();
+    void _loadMenu();
+    void _loadLevel();
+    void _loading();
+    void _createValidMaze();
+    void _createMazeBorders();
+    void _prepareWindow();
+
     enum Gamestate {MENU, END, LEVEL, LOADING};
-    Gamestate state;
-    Font font;
-    RenderWindow *window_PRIVATE;
-    Ball player;
-    Ball::Direction direction_PRIVATE;
-    MazeGenerator Maze_PRIVATE;
-    void play_PRIVATE();
-    Block blocks;
-    float delta;
-    sf::Clock clock;
+
+    Gamestate _gameState;
+    Font _font;
+    RenderWindow *_window_ptr;
+    Player _player;
+    Player::Direction _playerDirection;
+    MazeGenerator _mazeGenerator;
+    Block _blocks;
+    float _timeDelta;
+    sf::Clock _clock;
 
 };
 

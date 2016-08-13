@@ -18,6 +18,6 @@ public:
     int getNum();
     bool haveNumbers();
 private:
-    std::vector<int> nums;
+    std::vector<int> _numbers;
 };
 #endif // RANDOMS_H

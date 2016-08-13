@@ -16,15 +16,17 @@ DEPENDPATH += "/home/SFML/include"
 SOURCES += main.cpp \
     game.cpp \
     block.cpp \
-    ball.cpp \
     randoms.cpp \
-    mazegenerator.cpp
+    mazegenerator.cpp \
+    ai.cpp \
+    player.cpp
 
 HEADERS += \
     game.h \
     block.h \
-    ball.h \
     randoms.h \
-    mazegenerator.h
+    mazegenerator.h \
+    ai.h \
+    player.h
 
 

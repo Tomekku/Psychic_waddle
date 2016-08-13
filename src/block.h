@@ -13,7 +13,7 @@ public:
     Block();
     FloatRect getFloatRectOfBlock(RectangleShape rect) const;
     std::vector <RectangleShape> blockContainer;
-    void addBlock(float tmp_size_x, float tmp_size_y, float tmp_pos_x, float tmp_pos_y);
+    void addBlock(Vector2f size, Vector2f position);
 
 private:
     RectangleShape currBlock_PRIVATE;
